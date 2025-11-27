@@ -1,301 +1,43 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="mObywatel">
-    <link rel="apple-touch-icon" href="logo/logo.png">
-    <link rel="icon" type="image/png" href="logo/logo.png">
-    <title>mObywatel</title>
+/* iPhone 16 Pro (6.3", proporcja ~19.5:9) */
+@media screen 
+and (max-device-width: 440px) 
+and (device-height: 930px), 
+and (aspect-ratio: 19.5/9) {
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-        }
-
-        body {
-            position: fixed;
-            inset: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-
-        /* Instrukcja instalacji */
-        .install-prompt {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            padding: 40px;
-            text-align: center;
-        }
-
-        .install-prompt.hidden {
-            display: none;
-        }
-
-        .install-icon {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 30px;
-            border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .install-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .install-text {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
-            margin-bottom: 15px;
-            max-width: 400px;
-        }
-
-        .install-steps {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 20px;
-            max-width: 400px;
-        }
-
-        .install-step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            color: white;
-            font-size: 16px;
-        }
-
-        .install-step:last-child {
-            margin-bottom: 0;
-        }
-
-        .step-number {
-            background: rgba(255, 255, 255, 0.2);
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-weight: 700;
-        }
-
-        .skip-button {
-            margin-top: 30px;
-            padding: 15px 40px;
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.5);
-            border-radius: 25px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        /* Główna aplikacja */
-        .phone-container {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-
-            background-image: url("photos/Login.png");
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-
-            display: none;
-
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
-        }
-
-        .phone-container.active {
-            display: block;
-        }
-
-        .login-screen {
-            position: absolute;
-            inset: 0;
-        }
-
-        .login-screen.hidden {
-            display: none;
-        }
-
-        .password-click-zone {
-            position: absolute;
-            top: 35.9%;
-            left: 6.7%;
-            width: 86.6%;
-            height: 6.2%;
-        }
-
-        .password-input {
-            position: absolute;
-            top: 37.5%;
-            left: 17.4%;
-            width: 65.2%;
-            height: 3.1%;
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .eye-toggle {
-            position: absolute;
-            top: 37.5%;
-            right: 12.7%;
-            width: 6.7%;
-            height: 3.1%;
-            cursor: pointer;
-        }
-
-        .button-click-zone {
-            position: absolute;
-            bottom: 8.9%;
-            left: 6.7%;
-            width: 86.6%;
-            height: 6.2%;
-        }
-
-        .success-screen {
-            display: none;
-            position: absolute;
-            inset: 0;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #64b4ff 0%, #4a9eeb 100%);
-            text-align: center;
-        }
-
-        .success-screen.active {
-            display: flex;
-        }
-
-        .success-message {
-            font-size: 48px;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-
-<div class="install-prompt" id="installPrompt">
-    <img src="logo/logo.png" class="install-icon">
-    <h1 class="install-title">mObywatel</h1>
-
-    <p class="install-text">Dodaj do ekranu głównego telefonu:</p>
-
-    <div class="install-steps">
-        <div class="install-step"><span class="step-number">1</span> Kliknij Udostępnij ⎋</div>
-        <div class="install-step"><span class="step-number">2</span> Dodaj do ekranu głównego</div>
-        <div class="install-step"><span class="step-number">3</span> Otwórz aplikację</div>
-    </div>
-
-    <button class="skip-button" id="skipButton">Pomiń</button>
-</div>
-
-<div class="phone-container" id="phoneContainer">
-    <div class="login-screen" id="loginScreen">
-
-        <input type="password" class="password-input" id="passwordInput">
-
-        <div class="password-click-zone" id="passwordZone"></div>
-        <div class="eye-toggle" id="eyeToggle"></div>
-        <div class="button-click-zone" id="loginButton"></div>
-
-    </div>
-
-    <div class="success-screen" id="successScreen">
-        <h1 class="success-message">Dobrze dzień dobry</h1>
-    </div>
-</div>
-
-<script>
-    const installPrompt = document.getElementById('installPrompt');
-    const phoneContainer = document.getElementById('phoneContainer');
-    const skipButton = document.getElementById('skipButton');
-    const passwordInput = document.getElementById('passwordInput');
-    const passwordZone = document.getElementById('passwordZone');
-    const eyeToggle = document.getElementById('eyeToggle');
-    const loginButton = document.getElementById('loginButton');
-    const loginScreen = document.getElementById('loginScreen');
-    const successScreen = document.getElementById('successScreen');
-
-    function isStandalone() {
-        return window.matchMedia('(display-mode: standalone)').matches ||
-               window.navigator.standalone === true;
+    .phone-container {
+        width: 100vw;
+        height: 100dvh;
+        background-size: cover !important;
+        background-position: center center;
     }
 
-    function showApp() {
-        installPrompt.classList.add('hidden');
-        phoneContainer.classList.add('active');
-        setTimeout(() => {
-            passwordInput.focus();
-        }, 300);
+    /* Dopasowanie pól do grafiki na 16 Pro oh daddy */
+    .password-click-zone {
+        top: 36%;
+        left: 6.5%;
+        width: 87%;
+        height: 6%;
     }
 
-    if (isStandalone()) {
-        showApp();
+    .password-input {
+        top: 37.7%;
+        left: 17%;
+        width: 66%;
+        height: 3%;
+        font-size: 17px;
     }
 
-    skipButton.addEventListener('click', showApp);
+    .eye-toggle {
+        top: 37.7%;
+        right: 11.5%;
+        width: 7%;
+        height: 3%;
+    }
 
-    passwordZone.addEventListener('click', () => passwordInput.focus());
-
-    eyeToggle.addEventListener('click', () => {
-        passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-    });
-
-    loginButton.addEventListener('click', () => {
-        if (passwordInput.value === "123") {
-            loginScreen.classList.add("hidden");
-            successScreen.classList.add("active");
-        } else if (passwordInput.value !== "") {
-            passwordInput.style.color = "#ff6b6b";
-            setTimeout(() => passwordInput.style.color = "#fff", 500);
-        }
-    });
-
-    passwordInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            loginButton.click();
-        }
-    });
-
-    document.addEventListener("touchstart", (e) => {
-        if (e.touches.length > 1) e.preventDefault();
-    }, { passive: false });
-</script>
-
-</body>
-</html>
+    .button-click-zone {
+        bottom: 9.1%;
+        left: 6.5%;
+        width: 87%;
+        height: 6.2%;
+    }
+}
