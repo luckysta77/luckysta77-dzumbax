@@ -2,8 +2,22 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>mObywatel - Zaloguj się</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- iPhone fullscreen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Aplikacja">
+
+    <!-- Android fullscreen -->
+    <meta name="theme-color" content="#0a0a0a">
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <title>Aplikacja</title>
+
     <style>
         * {
             margin: 0;
@@ -12,443 +26,98 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1c1c1c);
             color: white;
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-            overflow: auto;
-            position: relative;
-        }
-        
-        html {
-            height: -webkit-fill-available;
-        }
-
-        /* Diagonal lines pattern */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    15deg,
-                    transparent,
-                    transparent 40px,
-                    rgba(255, 255, 255, 0.02) 40px,
-                    rgba(255, 255, 255, 0.02) 42px
-                );
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-            z-index: 0;
-        }
-
-        .container {
-            position: relative;
-            z-index: 10;
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-            display: flex;
-            flex-direction: column;
-            padding: 32px 24px 24px;
-            max-width: 480px;
-            margin: 0 auto;
-            justify-content: space-between;
-        }
-
-        /* Logo section */
-        .header {
-            margin-bottom: 32px;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 48px;
-        }
-
-        .logo {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            height: 100vh;
             overflow: hidden;
         }
 
-        .logo img {
-            width: 96px;
-            height: 96px;
-            object-fit: contain;
+        header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            animation: fade 1.2s ease;
         }
 
-        .app-name {
-            font-size: 40px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+        header img {
+            width: 90px;
+            height: 90px;
+            border-radius: 22px;
+            margin-bottom: 15px;
+            animation: zoom 0.6s ease;
         }
 
-        .greeting {
-            font-size: 38px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            line-height: 1.2;
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
         }
 
-        .subtitle {
-            font-size: 17px;
-            color: #9ca3af;
+        p.subtitle {
+            font-size: 16px;
+            opacity: 0.8;
         }
 
-        /* Form section */
-        .form-container {
-            background: linear-gradient(135deg, rgba(31, 41, 55, 0.4) 0%, rgba(17, 24, 39, 0.4) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(75, 85, 99, 0.2);
-            margin-bottom: 40px;
+        .content {
+            padding: 20px;
+            text-align: center;
+            animation: fade 1.6s ease;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 15px;
-            color: #d1d5db;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .form-input {
-            width: 100%;
-            background: rgba(17, 24, 39, 0.5);
-            border: 2px solid rgba(75, 85, 99, 0.6);
-            border-radius: 16px;
-            padding: 14px 48px 14px 16px;
-            font-size: 17px;
-            color: white;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus {
-            border-color: #3b82f6;
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: color 0.2s;
-        }
-
-        .toggle-password:hover {
-            color: white;
-        }
-
-        .toggle-password svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .forgot-password {
-            color: #60a5fa;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .forgot-password:hover {
-            color: #93c5fd;
-        }
-
-        /* Login button */
-        .login-button {
-            width: 100%;
-            background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
-            border: none;
-            border-radius: 9999px;
-            padding: 18px;
+        .button {
+            margin-top: 30px;
+            background: #007aff;
+            padding: 15px 30px;
+            border-radius: 14px;
             font-size: 18px;
-            font-weight: 600;
+            display: inline-block;
+            text-decoration: none;
             color: white;
-            cursor: pointer;
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
-            transition: all 0.2s;
-            margin-bottom: 24px;
+            transition: 0.2s;
         }
 
-        .login-button:hover {
-            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-            transform: scale(1.02);
+        .button:active {
+            transform: scale(0.95);
         }
 
-        .login-button:active {
-            transform: scale(0.98);
-        }
-
-        /* Footer */
-        .footer {
-            border-top: 1px solid #374151;
-            padding-top: 16px;
-        }
-
-        .footer-logos {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .footer-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .coi-logo {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .ministry {
-            font-size: 9px;
-            line-height: 1.3;
-        }
-
-        .kpo-logo {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .kpo-lines {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .kpo-line {
-            width: 20px;
-            height: 1.5px;
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        .kpo-text {
-            font-size: 5px;
-            line-height: 1.4;
-        }
-
-        .eu-logo {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            font-size: 6px;
-            line-height: 1.4;
-        }
-
-        .eu-flag {
-            position: relative;
-            width: 20px;
-            height: 20px;
-            margin-top: 4px;
-        }
-
-        .eu-circle {
-            width: 20px;
-            height: 20px;
-            border: 1.5px solid #4169e1;
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .eu-star {
+        footer {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #ffd700;
-            border-radius: 50%;
-        }
-
-        .version {
+            bottom: 20px;
+            width: 100%;
             text-align: center;
             font-size: 12px;
-            color: #4b5563;
+            opacity: 0.5;
         }
 
-        /* Responsive */
-        @media (max-width: 380px) {
-            .container {
-                padding: 24px 20px 20px;
-            }
-            
-            .app-name {
-                font-size: 34px;
-            }
-            
-            .greeting {
-                font-size: 32px;
-            }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoom {
+            from { transform: scale(0.7); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo-section">
-                <div class="logo">
-                    <img src="https://cdn.discordapp.com/attachments/1376308904153190641/1443669937326657667/logo.png?ex=6929e9e7&is=69289867&hm=bc7ef28592e3cde8757c9ec1769f7bff9e4f316ec74b6da335ce97a1c0d3e588&" alt="Godło Polski">
-                </div>
-                <h1 class="app-name">mObywatel</h1>
-            </div>
-            
-            <h2 class="greeting">Dobry wieczór!</h2>
-            <p class="subtitle">Zaloguj się do aplikacji.</p>
-        </div>
 
-        <!-- Form -->
-        <div class="form-container">
-            <div class="form-group">
-                <label class="form-label">Hasło</label>
-                <div class="input-wrapper">
-                    <input type="password" id="password" class="form-input">
-                    <button type="button" class="toggle-password" onclick="togglePassword()">
-                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <a href="#" class="forgot-password">Nie pamiętasz hasła?</a>
-        </div>
+<header>
+    <img src="icon.png" alt="Logo">
+    <h1>Witaj w aplikacji</h1>
+    <p class="subtitle">Pełny ekran • Nowoczesny wygląd</p>
+</header>
 
-        <div style="flex: 1;"></div>
+<div class="content">
+    <p>To jest Twoja własna aplikacja działająca na pełnym ekranie bez pasków iOS i Safari.</p>
+    <p>Możesz tu dodać co chcesz — logowanie, dashboard, panel użytkownika itd.</p>
 
-        <!-- Login Button -->
-        <button class="login-button" onclick="login()">Zaloguj się</button>
+    <a href="#" class="button">Przycisk akcji</a>
+</div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <div class="footer-logos">
-                <div class="footer-left">
-                    <span class="coi-logo">COI</span>
-                    <div class="ministry">
-                        <div>Ministerstwo</div>
-                        <div>Cyfryzacji</div>
-                    </div>
-                    <div class="kpo-logo">
-                        <div class="kpo-lines">
-                            <div class="kpo-line"></div>
-                            <div class="kpo-line"></div>
-                            <div class="kpo-line"></div>
-                            <div class="kpo-line"></div>
-                        </div>
-                        <div class="kpo-text">
-                            <div>KRAJOWY</div>
-                            <div>PLAN</div>
-                            <div>ODBUDOWY</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="eu-logo">
-                    <div>Sfinansowano przez</div>
-                    <div>Unię Europejską</div>
-                    <div>NextGenerationEU</div>
-                    <div class="eu-flag">
-                        <div class="eu-circle">
-                            <span class="eu-star" style="top: 1px; left: 8px;"></span>
-                            <span class="eu-star" style="top: 3px; left: 4px;"></span>
-                            <span class="eu-star" style="top: 8px; left: 1px;"></span>
-                            <span class="eu-star" style="top: 13px; left: 3px;"></span>
-                            <span class="eu-star" style="top: 16px; left: 8px;"></span>
-                            <span class="eu-star" style="top: 13px; left: 13px;"></span>
-                            <span class="eu-star" style="top: 8px; left: 16px;"></span>
-                            <span class="eu-star" style="top: 3px; left: 13px;"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <p class="version">wersja 4.71.1 (2)</p>
-        </div>
-    </div>
+<footer>
+    © 2025 Twoja Strona
+</footer>
 
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />';
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
-            }
-        }
-
-        function login() {
-            const password = document.getElementById('password').value;
-            if (password) {
-                alert('Logowanie z hasłem: ' + password);
-            } else {
-                alert('Proszę wprowadzić hasło');
-            }
-        }
-
-        // Prevent zoom on double tap on mobile
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-    </script>
 </body>
 </html>
