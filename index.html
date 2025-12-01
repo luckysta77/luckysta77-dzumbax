@@ -1,123 +1,187 @@
 <!DOCTYPE html>
+
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <!-- iPhone fullscreen -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Aplikacja">
+```
+<!-- PWA Meta Tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Moja Aplikacja">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
 
-    <!-- Android fullscreen -->
-    <meta name="theme-color" content="#0a0a0a">
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%234F46E5' width='180' height='180'/><text x='50%' y='50%' font-size='120' text-anchor='middle' dy='.3em' fill='white'>A</text></svg>">
 
-    <!-- PWA manifest -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon.png">
+<!-- Manifest -->
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk1vamEgQXBsaWthY2phIiwKICAic2hvcnRfbmFtZSI6ICJBcGxpa2FjamEiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAiZnVsbHNjcmVlbiIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzAwMDAwMCIsCiAgInRoZW1lX2NvbG9yIjogIiMwMDAwMDAiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDE5MiAxOTInPjxyZWN0IGZpbGw9JyUyMzRGNDZFNScgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInLz48dGV4dCB4PSc1MCUnIHk9JzUwJScgZm9udC1zaXplPScxMjAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuM2VtJyBmaWxsPSd3aGl0ZSc+QTwvdGV4dD48L3N2Zz4iLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IGZpbGw9JyUyMzRGNDZFNScgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInLz48dGV4dCB4PSc1MCUnIHk9JzUwJScgZm9udC1zaXplPScyODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuM2VtJyBmaWxsPSd3aGl0ZSc+QTwvdGV4dD48L3N2Zz4iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
 
-    <title>Aplikacja</title>
+<title>Moja Aplikacja PWA</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: fixed;
+        overscroll-behavior: none;
+    }
+    
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        /* Safe area insets dla iPhone'ów z notchem */
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    
+    .container {
+        text-align: center;
+        padding: 20px;
+        max-width: 90%;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+    
+    p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+    
+    .icon {
+        width: 120px;
+        height: 120px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        margin: 0 auto 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        backdrop-filter: blur(10px);
+    }
+    
+    .install-instructions {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 20px;
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .install-instructions.hidden {
+        display: none;
+    }
+    
+    button {
+        background: white;
+        color: #667eea;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        margin: 10px;
+    }
+    
+    button:active {
+        transform: scale(0.95);
+    }
+    
+    .status {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+</style>
+```
 
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a, #1c1c1c);
-            color: white;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 20px 20px;
-            animation: fade 1.2s ease;
-        }
-
-        header img {
-            width: 90px;
-            height: 90px;
-            border-radius: 22px;
-            margin-bottom: 15px;
-            animation: zoom 0.6s ease;
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        p.subtitle {
-            font-size: 16px;
-            opacity: 0.8;
-        }
-
-        .content {
-            padding: 20px;
-            text-align: center;
-            animation: fade 1.6s ease;
-        }
-
-        .button {
-            margin-top: 30px;
-            background: #007aff;
-            padding: 15px 30px;
-            border-radius: 14px;
-            font-size: 18px;
-            display: inline-block;
-            text-decoration: none;
-            color: white;
-            transition: 0.2s;
-        }
-
-        .button:active {
-            transform: scale(0.95);
-        }
-
-        footer {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            font-size: 12px;
-            opacity: 0.5;
-        }
-
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes zoom {
-            from { transform: scale(0.7); opacity: 0; }
-            to   { transform: scale(1); opacity: 1; }
-        }
-    </style>
 </head>
-
 <body>
+    <div class="container">
+        <div class="icon">🚀</div>
+        <h1>Witaj w PWA!</h1>
+        <p>Twoja aplikacja działa w trybie pełnoekranowym</p>
 
-<header>
-    <img src="icon.png" alt="Logo">
-    <h1>Witaj w aplikacji</h1>
-    <p class="subtitle">Pełny ekran • Nowoczesny wygląd</p>
-</header>
-
-<div class="content">
-    <p>To jest Twoja własna aplikacja działająca na pełnym ekranie bez pasków iOS i Safari.</p>
-    <p>Możesz tu dodać co chcesz — logowanie, dashboard, panel użytkownika itd.</p>
-
-    <a href="#" class="button">Przycisk akcji</a>
+```
+    <div id="status" class="status"></div>
+    
+    <div id="installInstructions" class="install-instructions">
+        <strong>Jak zainstalować na iPhone:</strong><br>
+        1. Naciśnij przycisk "Udostępnij" (kwadrat ze strzałką) 📤<br>
+        2. Przewiń w dół i wybierz "Dodaj do ekranu głównego" ➕<br>
+        3. Naciśnij "Dodaj" w prawym górnym rogu ✅
+    </div>
+    
+    <button onclick="checkStatus()">Sprawdź status</button>
 </div>
 
-<footer>
-    © 2025 Twoja Strona
-</footer>
+<script>
+    // Sprawdź czy aplikacja działa w trybie standalone (zainstalowana)
+    function checkStatus() {
+        const isStandalone = window.navigator.standalone || 
+                            window.matchMedia('(display-mode: standalone)').matches;
+        
+        const statusEl = document.getElementById('status');
+        const instructionsEl = document.getElementById('installInstructions');
+        
+        if (isStandalone) {
+            statusEl.textContent = '✅ Aplikacja zainstalowana i działa w trybie pełnoekranowym!';
+            instructionsEl.classList.add('hidden');
+        } else {
+            statusEl.textContent = '📱 Dodaj aplikację do ekranu głównego dla pełnego doświadczenia';
+            instructionsEl.classList.remove('hidden');
+        }
+    }
+    
+    // Zapobiegaj scrollowaniu
+    document.addEventListener('touchmove', function(e) {
+        if (e.touches.length > 1) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+    
+    // Ustaw wysokość na dokładną wysokość viewport (fix dla iOS)
+    function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    setViewportHeight();
+    window.addEventListener('resize', setViewportHeight);
+    
+    // Sprawdź status przy załadowaniu
+    checkStatus();
+    
+    // Service Worker dla PWA (opcjonalny)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZSkgewogIGUud2FpdFVudGlsKAogICAgY2FjaGVzLm9wZW4oJ3B3YS1jYWNoZScpLnRoZW4oZnVuY3Rpb24oY2FjaGUpIHsKICAgICAgcmV0dXJuIGNhY2hlLmFkZEFsbChbJy8nXSk7CiAgICB9KQogICk7Cn0pOwoKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGZ1bmN0aW9uKGUpIHsKICBlLnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGUucmVxdWVzdCkudGhlbihmdW5jdGlvbihyZXNwb25zZSkgewogICAgICByZXR1cm4gcmVzcG9uc2UgfHwgZmV0Y2goZS5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7').catch(() => {});
+    }
+</script>
+```
 
 </body>
 </html>
